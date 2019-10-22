@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8" />
-<title>What_is_tf_keras_really</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-150653878-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-150653878-1');
+</script>
+
+<meta charset="utf-8" />
+<title>What is tf.keras really?</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11771,25 +11782,17 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[0]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="What-is-tf.keras-really?">What is <code>tf.keras</code> <em>really</em>?<a class="anchor-link" href="#What-is-tf.keras-really?">&#182;</a></h1><p>This tutorial has been ported to TensorFlow 2.0 by Jared Winick. Almost all credit should be given to Jeremy Howard <code>fast.ai &lt;https://www.fast.ai&gt;</code> and his collaborators Rachel Thomas and Francisco Ingham for the original post "What is <code>torch.nn</code> <em>really</em>" at <a href="https://pytorch.org/tutorials/beginner/nn_tutorial.html">https://pytorch.org/tutorials/beginner/nn_tutorial.html</a>. Much of the original content has been copied verbatim. I really enjoyed the teaching style of the original and following it while porting to TF 2.0 was very helpful in learning that basics. It should be noted I am no expert in TF so if there are ways to improve the code, please submit a PR.</p>
-
+<table class="tfo-notebook-buttons" align="left">
+    <a target="_blank" href="https://colab.research.google.com/github/jaredwinick/what_is_tf_keras/blob/master/What_is_tf_keras_really.ipynb"><img src="https://www.tensorflow.org/images/colab_logo_32px.png" />Run in Google Colab</a>
+  </td>
+  <td>
+    <a target="_blank" href="https://github.com/jaredwinick/what_is_tf_keras/blob/master/What_is_tf_keras_really.ipynb"><img src="https://www.tensorflow.org/images/GitHub-Mark-32px.png" />View source on GitHub</a>
+  </td>
+</table>
 </div>
 </div>
 </div>
@@ -11797,27 +11800,35 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>&lt;TODO: where/how to run the notebook&gt;</p>
-<p>TensorFlow provides several high-level modules and classes such as <code>tf.keras.layeers &lt;https://www.tensorflow.org/api_docs/python/tf/keras/layers&gt;</code>_ ,
-<code>tf.keras.optimizers &lt;https://www.tensorflow.org/api_docs/python/tf/keras/optimizers&gt;</code>_ , and
-<code>tf.data.Dataset &lt;https://www.tensorflow.org/api_docs/python/tf/data/Dataset&gt;</code>_ 
+<h1 id="What-is-tf.keras-really?">What is <code>tf.keras</code> <em>really</em>?<a class="anchor-link" href="#What-is-tf.keras-really?">&#182;</a></h1><p>This tutorial has been ported to TensorFlow 2.0 by Jared Winick. <strong>All credit for should be given to Jeremy Howard <a href="https://www.fast.ai">fast.ai</a> and his collaborators Rachel Thomas and Francisco Ingham for the original post <a href="https://pytorch.org/tutorials/beginner/nn_tutorial.html">"What is <code>torch.nn</code> <em>really</em>"</a>.</strong> Much of the original content has been copied verbatim. I really enjoyed the teaching style of the original and following it while porting to TF 2.0 was very helpful in learning that basics. It should be noted I am no expert in TF so if there are ways to improve the code, please submit a PR! Hopefully this tutorial can be as useful as the original, but for those interested in TensorFlow 2 as opposed to PyTorch.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>TensorFlow provides several high-level modules and classes such as <a href="https://www.tensorflow.org/api_docs/python/tf/keras/layers"><code>tf.keras.layers</code></a>,
+<a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers"><code>tf.keras.optimizers</code></a>, and
+<a href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset"><code>tf.data.Dataset</code></a> 
 to help you create and train neural networks.
 In order to fully utilize their power and customize
 them for your problem, you need to really understand exactly what they're
-doing. To develop this understanding, we will first train basic neural net
-on the MNIST data set without using any features from these models; we will
+doing. To develop this understanding, we will first train a basic neural net
+on the MNIST data set without using any features from these modules; we will
 initially only use the most basic TensorFlow tensor functionality. Then, we will
 incrementally add one feature from <code>tf.keras.layers</code>, <code>tf.keras.optimizers</code>, or
 <code>Dataset</code> at a time, showing exactly what each piece does, and how it
 works to make the code either more concise, or more flexible.</p>
 <p><strong>This tutorial assumes you already have TensorFlow installed, and are familiar
-with the basics of tensor operations.</strong></p>
-<h2 id="MNIST-data-setup">MNIST data setup<a class="anchor-link" href="#MNIST-data-setup">&#182;</a></h2><p>We will use the classic <code>MNIST &lt;http://deeplearning.net/data/mnist/&gt;</code>_ dataset,
+with the basics of tensor operations.</strong> Using Google Colab is an easy way to start using TensorFlow 2.0 without having to install anything yourself.</p>
+<h2 id="MNIST-data-setup">MNIST data setup<a class="anchor-link" href="#MNIST-data-setup">&#182;</a></h2><p>We will use the classic <a href="http://deeplearning.net/data/mnist/">MNIST</a> dataset,
 which consists of black-and-white images of hand-drawn digits (between 0 and 9).</p>
-<p>We will use <code>pathlib &lt;https://docs.python.org/3/library/pathlib.html&gt;</code><em>
+<p>We will use <a href="https://docs.python.org/3/library/pathlib.html">pathlib</a>
 for dealing with paths (part of the Python 3 standard library), and will
 download the dataset using
-<code>requests &lt;http://docs.python-requests.org/en/master/&gt;</code></em>. We will only
+<a href="http://docs.python-requests.org/en/master/">requests</a>. We will only
 import modules when we use them, so you can see exactly what's being
 used at each point.</p>
 
@@ -11890,7 +11901,20 @@ first.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[97]:</div>
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span>
@@ -12007,7 +12031,7 @@ CIrwA0ERfiAowg8ERfiBoAg/EBThB4Ii/EBQ/weCC5r/92q6mAAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>TensorFlow uses <code>tf.Tensor</code>, rather than numpy arrays, so we need to convert out data <a href="https://www.tensorflow.org/tutorials/customization/basics#numpy_compatibility">https://www.tensorflow.org/tutorials/customization/basics#numpy_compatibility</a></p>
+<p>TensorFlow uses <code>tf.Tensor</code>, rather than numpy arrays, so we need to convert out data. We use the function <code>tf.constant</code> to convert the numpy array into a TensorFlow tensor. See this following for more detail on numpy compatibility <a href="https://www.tensorflow.org/tutorials/customization/basics#numpy_compatibility">https://www.tensorflow.org/tutorials/customization/basics#numpy_compatibility</a></p>
 
 </div>
 </div>
@@ -12033,7 +12057,7 @@ CIrwA0ERfiAowg8ERfiBoAg/EBThB4Ii/EBQ/weCC5r/92q6mAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[99]:</div>
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
@@ -12087,12 +12111,12 @@ Max label: 9
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Neural-net-from-scratch-(no-tf.keras)">Neural net from scratch (no tf.keras)<a class="anchor-link" href="#Neural-net-from-scratch-(no-tf.keras)">&#182;</a></h2><p>Let's first create a model using nothing but TensorFlow tensor operations. We're assuming
 you're already familiar with the basics of neural networks. (If you're not, you can
-learn them at <code>course.fast.ai &lt;https://course.fast.ai&gt;</code>_).</p>
+learn them at <a href="https://course.fast.ai&gt;">course.fast.ai</a>).</p>
 <p>TensorFlow provides methods to create random or zero-filled tensors, which we will
 use to create our weights and bias for a simple linear model. If you are comparing this post with the original using PyTorch, you can see some differences here with respect to how the frameworks are enabling gradients to be calculated. In TensorFlow you don't specify that a tensor requires gradients calculated on the object itself, but by using those tensors in the context of a <code>tf.GradientTape</code> as seen in a few paragraphs.</p>
-<div class="alert alert-info"><h4>Note</h4><p>We are initializing the weights here with
-   `Xavier initialisation <http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf>`_
-   (by multiplying with 1/sqrt(n)).</p></div>
+<p>A similar exercise can be see in the TensorFlow documentation <a href="https://www.tensorflow.org/tutorials/customization/custom_training">Custom training</a></p>
+<p><em>Note</em>: We are initializing the weights here with <a href="http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf">Xavier initialization</a> by multiplying with 1/sqrt(n).</p>
+
 </div>
 </div>
 </div>
@@ -12158,7 +12182,7 @@ random at this stage, since we start with random weights.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[102]:</div>
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">bs</span> <span class="o">=</span> <span class="mi">64</span>  <span class="c1"># batch size</span>
@@ -12183,8 +12207,8 @@ random at this stage, since we start with random weights.</p>
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>tf.Tensor(
-[-2.3311057 -2.5479636 -1.6105511 -2.46582   -2.4236836 -2.7581596
- -2.0606163 -2.8672032 -2.1638372 -2.422105 ], shape=(10,), dtype=float32) (64, 10)
+[-2.574955  -2.6288726 -2.3458853 -2.079679  -2.2557921 -2.4567945
+ -2.7491755 -2.2003245 -1.7462468 -2.3938751], shape=(10,), dtype=float32) (64, 10)
 </pre>
 </div>
 </div>
@@ -12232,7 +12256,7 @@ after a backprop pass later.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[104]:</div>
+<div class="prompt input_prompt">In&nbsp;[57]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">yb</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">bs</span><span class="p">]</span>
@@ -12253,7 +12277,7 @@ after a backprop pass later.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>tf.Tensor(2.381645, shape=(), dtype=float32)
+<pre>tf.Tensor(2.375083, shape=(), dtype=float32)
 </pre>
 </div>
 </div>
@@ -12300,7 +12324,7 @@ accuracy improves as our loss improves.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[106]:</div>
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">accuracy</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">yb</span><span class="p">))</span>
@@ -12320,7 +12344,7 @@ accuracy improves as our loss improves.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>tf.Tensor(0.03125, shape=(), dtype=float16)
+<pre>tf.Tensor(0.04688, shape=(), dtype=float16)
 </pre>
 </div>
 </div>
@@ -12345,7 +12369,7 @@ accuracy improves as our loss improves.</p>
 </ul>
 <p>We now use these gradients to update the weights and bias.</p>
 <p>Documentation can be seen at 
-<code>tf.GradientTape &lt;https://www.tensorflow.org/api_docs/python/tf/GradientTape&gt;</code>_.</p>
+<a href="https://www.tensorflow.org/api_docs/python/tf/GradientTape"><code>tf.GradientTape</code></a>.</p>
 
 </div>
 </div>
@@ -12355,9 +12379,7 @@ accuracy improves as our loss improves.</p>
 <div class="prompt input_prompt">In&nbsp;[0]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.core.debugger</span> <span class="k">import</span> <span class="n">set_trace</span>
-
-<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># learning rate</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># learning rate</span>
 <span class="n">epochs</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># how many epochs to train for</span>
 
 <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
@@ -12395,7 +12417,7 @@ have increased, and they have.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[108]:</div>
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">loss_func</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">),</span> <span class="n">yb</span><span class="p">),</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">),</span> <span class="n">yb</span><span class="p">))</span>
@@ -12415,7 +12437,7 @@ have increased, and they have.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>tf.Tensor(0.24312916, shape=(), dtype=float32) tf.Tensor(0.9375, shape=(), dtype=float16)
+<pre>tf.Tensor(0.24429947, shape=(), dtype=float32) tf.Tensor(0.9375, shape=(), dtype=float16)
 </pre>
 </div>
 </div>
@@ -12429,13 +12451,13 @@ have increased, and they have.</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Using-tf.keras">Using tf.keras<a class="anchor-link" href="#Using-tf.keras">&#182;</a></h2><p>We will now refactor our code, so that it does the same thing as before, only
-we'll start taking advantage of TensorFlows's <code>keras</code> classes to make it more concise
+we'll start taking advantage of TensorFlows's <code>tf.keras</code> classes to make it more concise
 and flexible. At each step from here, we should be making our code one or more
 of: shorter, more understandable, and/or more flexible. It does seem like we the <code>tf.nn</code> module might provide classes that are more directly inline with the original post's use of <code>torch.nn</code> but I have chosen to jump right to using <code>tf.keras</code> as it is the recommended higher level API.</p>
 <p>The first and easiest step is to make our code shorter by replacing our
 hand-written activation and loss functions with those from <code>tf.keras</code>.</p>
 <p>TensorFlow provides a single function <code>tf.keras.losses.SparseCategoricalCrossentropy</code> that combines
-the a softmax activation with a loss function. Note that we use <code>from_logit=True</code> here because we are not passing in a probability distribution. See <a href="https://www.tensorflow.org/api_docs/python/tf/keras/losses/SparseCategoricalCrossentropy">https://www.tensorflow.org/api_docs/python/tf/keras/losses/SparseCategoricalCrossentropy</a></p>
+a softmax activation with a loss function. Note that we use <code>from_logit=True</code> here because we are not passing in a probability distribution. See <a href="https://www.tensorflow.org/api_docs/python/tf/keras/losses/SparseCategoricalCrossentropy">https://www.tensorflow.org/api_docs/python/tf/keras/losses/SparseCategoricalCrossentropy</a></p>
 
 </div>
 </div>
@@ -12467,7 +12489,7 @@ the a softmax activation with a loss function. Note that we use <code>from_logit
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[110]:</div>
+<div class="prompt input_prompt">In&nbsp;[63]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">loss_func</span><span class="p">(</span><span class="n">yb</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">)),</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">),</span> <span class="n">yb</span><span class="p">))</span>
@@ -12487,7 +12509,7 @@ the a softmax activation with a loss function. Note that we use <code>from_logit
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>tf.Tensor(0.24312921, shape=(), dtype=float32) tf.Tensor(0.9375, shape=(), dtype=float16)
+<pre>tf.Tensor(0.24429946, shape=(), dtype=float32) tf.Tensor(0.9375, shape=(), dtype=float16)
 </pre>
 </div>
 </div>
@@ -12513,8 +12535,7 @@ holds our weights, bias, and method for the forward step.</p>
 <div class="prompt input_prompt">In&nbsp;[0]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># See https://www.tensorflow.org/tutorials/customization/custom_training#define_the_model</span>
-<span class="k">class</span> <span class="nc">Mnist_Logistic</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Mnist_Logistic</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
       <span class="nb">super</span><span class="p">(</span><span class="n">Mnist_Logistic</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">((</span><span class="mi">784</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">784</span><span class="p">))</span>
@@ -12566,7 +12587,7 @@ method automatically.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[113]:</div>
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">loss_func</span><span class="p">(</span><span class="n">yb</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">)))</span>
@@ -12586,7 +12607,7 @@ method automatically.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>tf.Tensor(2.1881437, shape=(), dtype=float32)
+<pre>tf.Tensor(2.5179658, shape=(), dtype=float32)
 </pre>
 </div>
 </div>
@@ -12600,10 +12621,10 @@ method automatically.</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Previously for our training loop we had to update the values for each parameter
-by name, like this:
-::
-weights.assign_sub(lr <em> dW)
-bias.assign_sub(lr </em> dB)</p>
+by name, like this:</p>
+
+<pre><code>weights.assign_sub(lr * dW)
+bias.assign_sub(lr * dB)</code></pre>
 <p>Now we can take advantage of <code>model.trainable_variables</code> to make those steps more concise
 and less prone to the error of forgetting some of our parameters, particularly
 if we had a more complicated model.</p>
@@ -12663,7 +12684,7 @@ again later.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[116]:</div>
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">loss_func</span><span class="p">(</span><span class="n">yb</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">)),</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">),</span> <span class="n">yb</span><span class="p">))</span>
@@ -12683,7 +12704,7 @@ again later.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>tf.Tensor(0.24496447, shape=(), dtype=float32) tf.Tensor(0.9375, shape=(), dtype=float16)
+<pre>tf.Tensor(0.2520585, shape=(), dtype=float32) tf.Tensor(0.9375, shape=(), dtype=float16)
 </pre>
 </div>
 </div>
@@ -12699,7 +12720,7 @@ again later.</p>
 <h2 id="Refactor-using-tf.keras.layers.Dense">Refactor using tf.keras.layers.Dense<a class="anchor-link" href="#Refactor-using-tf.keras.layers.Dense">&#182;</a></h2><p>We continue to refactor our code.  Instead of manually defining and
 initializing <code>self.weights</code> and <code>self.bias</code>, and calculating <code>xb  @
 self.weights + self.bias</code>, we will instead use the TensorFlow class
-<code>tf.keras.layers.Dense &lt;https://www.tensorflow.org/api_docs/python/tf/keras/layers/Dense&gt;</code>_ for a
+<a href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Dense"><code>tf.keras.layers.Dense</code></a> for a
 linear layer, which does all that for us. TensorFlow has many types of
 predefined layers that can greatly simplify our code, and often makes it
 faster too.</p>
@@ -12715,10 +12736,10 @@ faster too.</p>
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Mnist_Logistic</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
       <span class="nb">super</span><span class="p">(</span><span class="n">Mnist_Logistic</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">lin</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="mi">784</span><span class="p">))</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="mi">784</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xb</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lin</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12737,7 +12758,7 @@ faster too.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[118]:</div>
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Mnist_Logistic</span><span class="p">()</span>
@@ -12758,7 +12779,7 @@ faster too.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>tf.Tensor(2.5149765, shape=(), dtype=float32)
+<pre>tf.Tensor(2.5036383, shape=(), dtype=float32)
 </pre>
 </div>
 </div>
@@ -12778,7 +12799,7 @@ faster too.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[119]:</div>
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fit</span><span class="p">()</span>
@@ -12800,7 +12821,7 @@ faster too.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>tf.Tensor(0.2418468, shape=(), dtype=float32)
+<pre>tf.Tensor(0.25161958, shape=(), dtype=float32)
 </pre>
 </div>
 </div>
@@ -12813,16 +12834,16 @@ faster too.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Refactor-using-tf.keras.optimizers">Refactor using tf.keras.optimizers<a class="anchor-link" href="#Refactor-using-tf.keras.optimizers">&#182;</a></h2><p>TensorFlow also has a package with various optimization algorithms, <code>tf.keras.optimizers</code>.
+<h2 id="Refactor-using-tf.keras.optimizers">Refactor using tf.keras.optimizers<a class="anchor-link" href="#Refactor-using-tf.keras.optimizers">&#182;</a></h2><p>TensorFlow also has a package with various optimization algorithms, <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers"><code>tf.keras.optimizers</code></a>.
 We can use the <code>apply_gradients</code> method from our optimizer to take a forward step, instead
 of manually updating each parameter.</p>
-<p>This will let us replace our previous manually coded optimization step:
-::
-  for variable, grad in zip(model.trainable_variables, gradients):
-    variable.assign_sub(lr * grad)</p>
-<p>and instead use just:
-::
-  opt.apply_gradients(zip(gradients, model.trainable_variables))</p>
+<p>This will let us replace our previous manually coded optimization step:</p>
+
+<pre><code>  for variable, grad in zip(model.trainable_variables, gradients):
+    variable.assign_sub(lr * grad)</code></pre>
+<p>and instead use just:</p>
+
+<pre><code>  opt.apply_gradients(zip(gradients, model.trainable_variables))</code></pre>
 
 </div>
 </div>
@@ -12839,7 +12860,7 @@ can reuse it in the future.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[120]:</div>
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_model</span><span class="p">():</span>
@@ -12880,8 +12901,8 @@ can reuse it in the future.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>tf.Tensor(2.4375713, shape=(), dtype=float32)
-tf.Tensor(0.2646823, shape=(), dtype=float32)
+<pre>tf.Tensor(2.5305252, shape=(), dtype=float32)
+tf.Tensor(0.2404473, shape=(), dtype=float32)
 </pre>
 </div>
 </div>
@@ -12894,7 +12915,7 @@ tf.Tensor(0.2646823, shape=(), dtype=float32)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Refactor-using-Dataset">Refactor using Dataset<a class="anchor-link" href="#Refactor-using-Dataset">&#182;</a></h2><p>TensorFlow has an <code>Dataset</code> class as documented here <a href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset">https://www.tensorflow.org/api_docs/python/tf/data/Dataset</a>. A <code>Dataset</code> can be created from <code>Tensor</code>s  and can hold both the input and labels. The <code>Dataset</code> also provides an easy way to iterate over batches.</p>
+<h2 id="Refactor-using-Dataset">Refactor using Dataset<a class="anchor-link" href="#Refactor-using-Dataset">&#182;</a></h2><p>TensorFlow provides the <a href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset"><code>tf.data.Dataset</code></a> class as an abstraction over the data needed for machine learning pipelines. A simple way to construct a <code>Dataset</code> is from existing tensors. The <code>Dataset</code> can hold the input as well as labels, and also provides an easy way to iterate over batches. For much more info, please see <a href="https://www.tensorflow.org/guide/data">https://www.tensorflow.org/guide/data</a>.</p>
 
 </div>
 </div>
@@ -12916,23 +12937,23 @@ tf.Tensor(0.2646823, shape=(), dtype=float32)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Previously, we had to iterate through minibatches of x and y values separately:
-::
-  for i in range((n - 1) // bs + 1):
+<p>Previously, we had to iterate through minibatches of x and y values separately:</p>
+
+<pre><code>  for i in range((n - 1) // bs + 1):
     start_i = i * bs
     end_i = start_i + bs
     xb = x_train[start_i:end_i]
-    yb = y_train[start_i:end_i]</p>
-<p>Now, we can do this in a single line:
-::
-  for xb, yb in train_ds.batch(bs):</p>
+    yb = y_train[start_i:end_i]</code></pre>
+<p>Now, we can do this in a single line:</p>
+
+<pre><code>  for xb, yb in train_ds.batch(bs):</code></pre>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[122]:</div>
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">opt</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
@@ -12963,7 +12984,7 @@ tf.Tensor(0.2646823, shape=(), dtype=float32)
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>tf.Tensor(0.2591196, shape=(), dtype=float32)
+<pre>tf.Tensor(0.24117279, shape=(), dtype=float32)
 </pre>
 </div>
 </div>
@@ -12976,15 +12997,15 @@ tf.Tensor(0.2646823, shape=(), dtype=float32)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Thanks to TensorFlows's <code>tf.keras.Model</code>, <code>tf.keras.optimizers</code>, and <code>tf.data.Dataset</code>,
+<p>Thanks to TensorFlows's <a href="https://www.tensorflow.org/api_docs/python/tf/keras/Model"><code>tf.keras.Model</code></a>, <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers"><code>tf.keras.optimizers</code></a>, and <a href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset"><code>tf.data.Dataset</code></a>,
 our training loop is now dramatically smaller and easier to understand. Let's
 now try to add the basic features necessary to create effecive models in practice.</p>
 <h2 id="Add-validation">Add validation<a class="anchor-link" href="#Add-validation">&#182;</a></h2><p>In section 1, we were just trying to get a reasonable training loop set up for
 use on our training data.  In reality, you <strong>always</strong> should also have
-a <code>validation set &lt;https://www.fast.ai/2017/11/13/validation-sets/&gt;</code>_, in order
+a <a href="https://www.fast.ai/2017/11/13/validation-sets/">validation set</a>, in order
 to identify if you are overfitting.</p>
 <p>Shuffling the training data is
-<code>important &lt;https://www.quora.com/Does-the-order-of-training-data-matter-when-training-neural-networks&gt;</code>_
+<a href="https://www.quora.com/Does-the-order-of-training-data-matter-when-training-neural-networks">important</a>
 to prevent correlation between batches and overfitting. On the other hand, the
 validation loss will be identical whether we shuffle the validation set or not.
 Since shuffling takes extra time, it makes no sense to shuffle the validation data.</p>
@@ -13017,14 +13038,14 @@ size and compute the loss more quickly.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We will calculate and print the training and validation loss and accuracy at the end of each epoch. To do this we will leverage the <code>tf.keras.metrics</code> module.</p>
+<p>We will calculate and print the training and validation loss and accuracy at the end of each epoch. To do this we will leverage the <a href="https://www.tensorflow.org/api_docs/python/tf/keras/metrics"><code>tf.keras.metrics</code></a> module.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[124]:</div>
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">opt</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
@@ -13083,8 +13104,8 @@ size and compute the loss more quickly.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Epoch 1, Loss: 0.4355030357837677, Accuracy: 88.01000213623047, Valid Loss: 0.33484745025634766, Valiid Accuracy: 90.44000244140625
-Epoch 2, Loss: 0.32262787222862244, Accuracy: 90.98799896240234, Valid Loss: 0.2874145209789276, Valiid Accuracy: 91.9000015258789
+<pre>Epoch 1, Loss: 0.4367533028125763, Accuracy: 88.052001953125, Valid Loss: 0.34305909276008606, Valiid Accuracy: 90.1500015258789
+Epoch 2, Loss: 0.3235304057598114, Accuracy: 90.90599822998047, Valid Loss: 0.29940706491470337, Valiid Accuracy: 91.6199951171875
 </pre>
 </div>
 </div>
@@ -13192,11 +13213,11 @@ training and validation losses for each epoch.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[127]:</div>
+<div class="prompt input_prompt">In&nbsp;[80]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">opt</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
-<span class="n">fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
+<span class="n">fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span> <span class="n">validation_ds</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13213,8 +13234,8 @@ training and validation losses for each epoch.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Epoch 1, Loss: 0.4355713427066803, Accuracy: 88.15399932861328, Valid Loss: 0.3269411027431488, Valiid Accuracy: 90.8499984741211
-Epoch 2, Loss: 0.32339245080947876, Accuracy: 90.98600006103516, Valid Loss: 0.31158751249313354, Valiid Accuracy: 91.13999938964844
+<pre>Epoch 1, Loss: 0.4374210238456726, Accuracy: 88.06600189208984, Valid Loss: 0.3246917128562927, Valiid Accuracy: 90.66999816894531
+Epoch 2, Loss: 0.32279902696609497, Accuracy: 90.93800354003906, Valid Loss: 0.2960929870605469, Valiid Accuracy: 91.62999725341797
 </pre>
 </div>
 </div>
@@ -13229,13 +13250,13 @@ Epoch 2, Loss: 0.32339245080947876, Accuracy: 90.98600006103516, Valid Loss: 0.3
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You can use these basic 2 lines of code to train a wide variety of models.
 Let's see if we can use them to train a convolutional neural network (CNN)!</p>
-<h2 id="Switch-to-CNN">Switch to CNN<a class="anchor-link" href="#Switch-to-CNN">&#182;</a></h2><p>We are now going to build our neural network with three convolutional layers.
+<h2 id="Switch-to-CNN">Switch to CNN<a class="anchor-link" href="#Switch-to-CNN">&#182;</a></h2><p>We are now going to build our neural network with a convolutional layer.
 Because none of the functions in the previous section assume anything about
 the model form, we'll be able to use them to train a CNN without any modification.</p>
 <p>We will use TensorFlow's predefined
-<code>tf.keras.layers.Conv2D &lt;https://www.tensorflow.org/api_docs/python/tf/keras/layers/Conv2D&gt;</code>_ class
+<a href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Conv2D"><code>tf.keras.layers.Conv2D</code></a> class
 as our convolutional layer. We define a CNN with 1 convolutional layers just like the architecture here <a href="https://www.tensorflow.org/tutorials/quickstart/advanced">https://www.tensorflow.org/tutorials/quickstart/advanced</a></p>
-<p>This time when creating the <code>SparseCategoricalCrossentropy</code> use the default of <code>from_logits=False</code> because we are doing a softmax in the last layer of the model, so it is outputing a probability distribution.</p>
+<p>This time when creating the <code>SparseCategoricalCrossentropy</code> use the default of <code>from_logits=False</code> because we are doing a softmax in the last layer of the model, so it is already outputing a probability distribution.</p>
 
 </div>
 </div>
@@ -13269,14 +13290,14 @@ as our convolutional layer. We define a CNN with 1 convolutional layers just lik
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[129]:</div>
+<div class="prompt input_prompt">In&nbsp;[82]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Mnist_CNN</span><span class="p">()</span>
 <span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">()</span>
 <span class="n">loss_func</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">()</span>
 
-<span class="n">fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
+<span class="n">fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span> <span class="n">validation_ds</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13293,8 +13314,8 @@ as our convolutional layer. We define a CNN with 1 convolutional layers just lik
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Epoch 1, Loss: 0.24187572300434113, Accuracy: 93.2820053100586, Valid Loss: 0.09405747056007385, Valiid Accuracy: 97.5
-Epoch 2, Loss: 0.07484585046768188, Accuracy: 97.74400329589844, Valid Loss: 0.06963372975587845, Valiid Accuracy: 97.98999786376953
+<pre>Epoch 1, Loss: 0.23629596829414368, Accuracy: 93.24800109863281, Valid Loss: 0.0928812175989151, Valiid Accuracy: 97.50999450683594
+Epoch 2, Loss: 0.07652167230844498, Accuracy: 97.6719970703125, Valid Loss: 0.06858094781637192, Valiid Accuracy: 98.02999877929688
 </pre>
 </div>
 </div>
@@ -13307,18 +13328,10 @@ Epoch 2, Loss: 0.07484585046768188, Accuracy: 97.74400329589844, Valid Loss: 0.0
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="tf.keras.Sequential">tf.keras.Sequential<a class="anchor-link" href="#tf.keras.Sequential">&#182;</a></h2><p><code>tf.keras</code> has another handy class we can use to simply our code:
-<code>Sequential &lt;https://www.tensorflow.org/api_docs/python/tf/keras/Sequential&gt;</code>_ .
+<h2 id="tf.keras.Sequential">tf.keras.Sequential<a class="anchor-link" href="#tf.keras.Sequential">&#182;</a></h2><p><code>tf.keras</code> has another handy class we can use to simply our code
+<a href="https://www.tensorflow.org/api_docs/python/tf/keras/Sequential"><code>tf.keras.Sequential</code></a>.
 A <code>Sequential</code> object runs each of the modules contained within it, in a
 sequential manner. This is a simpler way of writing our neural network.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p>The model created with <code>Sequential</code> is simply:</p>
 
 </div>
@@ -13326,7 +13339,7 @@ sequential manner. This is a simpler way of writing our neural network.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[130]:</div>
+<div class="prompt input_prompt">In&nbsp;[83]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
@@ -13338,7 +13351,7 @@ sequential manner. This is a simpler way of writing our neural network.</p>
 
 <span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">()</span>
 
-<span class="n">fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
+<span class="n">fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span> <span class="n">validation_ds</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13355,8 +13368,8 @@ sequential manner. This is a simpler way of writing our neural network.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Epoch 1, Loss: 0.24284185469150543, Accuracy: 93.09600067138672, Valid Loss: 0.09805671870708466, Valiid Accuracy: 97.38999938964844
-Epoch 2, Loss: 0.08077562600374222, Accuracy: 97.5719985961914, Valid Loss: 0.07287927716970444, Valiid Accuracy: 97.93000030517578
+<pre>Epoch 1, Loss: 0.2498997449874878, Accuracy: 92.91999816894531, Valid Loss: 0.10154058784246445, Valiid Accuracy: 97.1500015258789
+Epoch 2, Loss: 0.08210417628288269, Accuracy: 97.53400421142578, Valid Loss: 0.07364194095134735, Valiid Accuracy: 97.79999542236328
 </pre>
 </div>
 </div>
@@ -13376,7 +13389,7 @@ Epoch 2, Loss: 0.08077562600374222, Accuracy: 97.5719985961914, Valid Loss: 0.07
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[131]:</div>
+<div class="prompt input_prompt">In&nbsp;[84]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
@@ -13391,7 +13404,7 @@ Epoch 2, Loss: 0.08077562600374222, Accuracy: 97.5719985961914, Valid Loss: 0.07
               <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
 
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">validation_ds</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13409,23 +13422,23 @@ Epoch 2, Loss: 0.08077562600374222, Accuracy: 97.5719985961914, Valid Loss: 0.07
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Epoch 1/2
-782/782 [==============================] - 7s 8ms/step - loss: 0.2542 - accuracy: 0.9269
+782/782 [==============================] - 6s 8ms/step - loss: 0.2514 - accuracy: 0.9269
 Epoch 2/2
-782/782 [==============================] - 4s 5ms/step - loss: 0.0852 - accuracy: 0.9746
-79/79 [==============================] - 0s 5ms/step - loss: 0.0728 - accuracy: 0.9789
+782/782 [==============================] - 4s 5ms/step - loss: 0.0825 - accuracy: 0.9752
+79/79 [==============================] - 0s 5ms/step - loss: 0.0703 - accuracy: 0.9779
 </pre>
 </div>
 </div>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[131]:</div>
+<div class="prompt output_prompt">Out[84]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[0.07282667055938251, 0.9789]</pre>
+<pre>[0.07032434737510225, 0.9779]</pre>
 </div>
 
 </div>
@@ -13447,7 +13460,7 @@ TensorFlow:</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[132]:</div>
+<div class="prompt input_prompt">In&nbsp;[85]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Num GPUs Available: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s1">&#39;GPU&#39;</span><span class="p">)))</span>
@@ -13489,7 +13502,8 @@ TensorFlow:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Closing-thoughts">Closing thoughts<a class="anchor-link" href="#Closing-thoughts">&#182;</a></h2><p>Again, almost all credit for this tutorial should go to the originial authors of "What is <code>torch.nn</code> <em>really</em>?" <a href="https://pytorch.org/tutorials/beginner/nn_tutorial.html">https://pytorch.org/tutorials/beginner/nn_tutorial.html</a> Jeremy Howard of fast.ai with Rachel Thomas and Francisco Ingham. I have really enjoyed the teaching style that Jeremy and Rachel use in their fast.ai courses, and the original tutorial felt very similar to fast.ai material. If you like that teaching style as well, I would highly recommend walking through with the original in PyTorch, or this version with TensorFlow, to get a better feel for what is going on inside these frameworks.</p>
+<h2 id="Closing-thoughts">Closing thoughts<a class="anchor-link" href="#Closing-thoughts">&#182;</a></h2><p>Again, all credit for this tutorial should really go to the originial authors of <a href="https://pytorch.org/tutorials/beginner/nn_tutorial.html">"What is <code>torch.nn</code> <em>really</em>?"</a> Jeremy Howard of <a href="https://fast.ai">fast.ai</a> with Rachel Thomas and Francisco Ingham. I have really enjoyed the teaching style that Jeremy and Rachel use in their fast.ai courses, and the original tutorial felt very similar to fast.ai material. If you like that teaching style as well, I would highly recommend walking through with the original in PyTorch, or this version with TensorFlow, to get a better feel for what is going on inside these frameworks.</p>
+<p>From my personal perspective as an engineer, the high-level APIs available in TensorFlow (or PyTorch) are making it easier and easier to apply deep learning. It is an exciting time to see so much progress in lowering the barrier to entry and improving the tools engineers/scientists/researchers have to solve problems.</p>
 
 </div>
 </div>
